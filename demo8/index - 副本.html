@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>批量上传</title>
+    <style>
+        .br {
+            width: 100%;
+            border: 1px solid #ccc;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+<div class="br">
+    <select name="conference" id="retconference">
+		<option value="-1">请选择会议</option>
+    </select>
+	<br>
+    <button id="selFile">选择文件</button>
+    <span id="filePath"></span>
+    <br>
+    <button id="selFolder">选择目录</button>
+    <span id="folderPath"></span>
+    <br>
+	<button id="uploadFile">上传</button>
+    <span id="moveRet"></span>
+	
+</div>
+<script type="text/tiscript">
+    self.ready = function() {
+        var file = "";
+        var folder = "";
+		var click_enable = true
+		
+		var retconferences = view.conference()
+		var json = JSON.parse(retconferences)
+		var i = 0
+		while(true){
+			$(#retconference).options.append("<option value='"+json.data[i].id+"'>"+json.data[i].conference_name+"</option>")
+			i++
+			if(i==json.total){
+				break
+			}
+		}
+        //选择文件
+        $(#selFile).on("click", function() {
+            //文件筛选项
+			 const filter = "Files (*.csv,*.xlsx)|*.CSV;*.XLSX|All Files (*.*)|*.*";
+            ///const filter = "Files (*.csv,*.csv,*.jpeg,*.gif,*.csv)|*.csv,*.jpg;*.jpeg;*.gif;*.png|All Files (*.*)|*.*";
+            //默认后缀
+            const defaultExt = ".csv";
+            //初始化路径，就是文件选择窗打开时所在路径
+            const initialPath = System.path(#USER_DOCUMENTS);
+            //标题
+            const caption = "选择csv";
+            file = view.selectFile(#open, filter, defaultExt, initialPath, caption );
+            $(#filePath).text = file;
+            return true;
+        });
+        //选择文件夹
+        $(#selFolder).on("click", function() {
+            folder = view.selectFolder("选择你的文件夹");
+            $(#folderPath).text = folder;
+        });
+        //上传文件
+        $(#uploadFile).on("click", function() {
+		$(#moveRet).text = "";
+		//获取select下option，先选取select，然后再$$找查它的子元素
+		var opt = $(select[name='conference']).$$(option);
+		var conferenceid = 0;
+		for(var child in opt) {
+			//判断元素是否选中
+			if(child.getState(Element.STATE_CHECKED)) {
+				conferenceid = child.value;
+			}
+		}
+            if(click_enable && file && folder　&& conferenceid) {
+				click_enable = false
+                var ret = view.upload(file, folder,conferenceid);
+				click_enable = true
+				file=""
+				folder=""
+                $(#moveRet).text = ret;
+            }else{
+				view.msgbox(#warning, "请重新选择");
+			}
+        });
+    };
+</script>
+</body>
+</html>

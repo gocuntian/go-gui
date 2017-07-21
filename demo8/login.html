@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>账户登录</title>
+</head>
+<body>
+<div style="width:320px;border: 0px solid;margin:50px auto;padding:20px 0px 20px 40px;">
+	<form action="" style="padding: 2px;">
+		<table align="center">
+			<tr>
+				<td>账号：</td>
+				<td>
+					<input type="text" name="account"    novalue="请输入账号" >
+				</td>
+			</tr>
+			<tr>
+				<td>密码：</td>
+				<td>
+					<input type="password" name="password" novalue="请输入密码" >
+				</td>
+			</tr>
+			 <tr>
+				 <td colspan="2" style="text-align:center;vertical-align:middle;">
+						<button id="btn1">登录</button>
+						<input type="reset" value="重置" />
+				 </td> 
+			 </tr>
+		</table>
+	</form>
+</div>
+
+
+<script type="text/tiscript">
+	//view的事件响应
+	//视图窗口大小发生改变时
+	view.on("sizing", function(sizingParams) {
+		view.dump("大小改变", sizingParams.x, sizingParams.y, sizingParams.width, sizingParams.height);
+	});
+    $(#btn1).on("click", function() {
+        //获取文本框中的值
+        var name = $(input[name='account']).value.trim();
+        if(name.length == 0) {
+            //弹出警告框
+            view.msgbox(#warning, "账号不能为空");
+            return false;
+        }
+ 
+        //获取文本框中的值
+        var pwd = $(input[name='password']).value.trim();
+        if(pwd.length == 0) {
+            //弹出警告框
+            view.msgbox(#warning, "密码不能为空");
+            return false;
+        }
+        //表单数据
+        var formData = {
+            "account": name,
+            "password": pwd,
+        };
+        //我们把从表单中的数据获取，并转成json字符串
+        //调用go中定义的函数login，这样go中就可以获取到ui中的数据了。
+        var msg = view.login(JSON.stringify(formData));
+		if(msg.length != 0){
+			view.msgbox(#warning, msg);
+		}
+		
+    });
+</script>
+</body>
+</html>

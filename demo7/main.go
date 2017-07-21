@@ -40,7 +40,7 @@ func defFunc(w *window.Window) {
 			return sciter.NewValue("移动失败")
 		} else {
 			//删除原文件
-			os.Remove(file)
+			//os.Remove(file)
 			return sciter.NewValue("移动成功")
 		}
 
