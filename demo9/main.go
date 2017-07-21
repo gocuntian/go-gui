@@ -20,7 +20,7 @@ import (
 	"github.com/sciter-sdk/go-sciter/window"
 )
 
-const URL = "https://apipre.bi.sensetime.com"
+const URL = ""
 const PathSeparator = `/`
 const STATUS_CODE = 200
 
