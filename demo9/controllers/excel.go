@@ -3,12 +3,35 @@ package controllers
 import (
 	"encoding/csv"
 	"os"
+
+	"github.com/tealeg/xlsx"
 )
 
-// func ReadExcel(fields []string, file string) (map[string]string, error) {
-// 	//data := make(map[string]string)
-
-// }
+func ReadXlsx(fields []string, file string) (map[string]string, error) {
+	data := make(map[string]string)
+	xlFile, err := xlsx.OpenFile(file)
+	if err != nil {
+		return data, err
+	}
+	var rowstr string
+	var key string
+	for _, sheet := range xlFile.Sheets {
+		for k, row := range sheet.Rows {
+			if k > 0 {
+				for i, cell := range row.Cells {
+					if i > 0 && i <= len(fields) {
+						rowstr += fields[i] + "=" + cell.String() + "&"
+					}
+					if i == 0 {
+						key = cell.String()
+					}
+				}
+				data[key] = rowstr
+			}
+		}
+	}
+	return data, nil
+}
 
 func ReadCVS(fields []string, cvsFile string) (map[string]string, error) {
 	data := make(map[string]string)
@@ -29,9 +52,10 @@ func ReadCVS(fields []string, cvsFile string) (map[string]string, error) {
 		key = ""
 		if k > 0 {
 			for i, cell := range row {
-				if i > 0 {
+				if i > 0 && i <= len(fields) {
 					rowstr += fields[i] + "=" + cell + "&"
-				} else {
+				}
+				if i == 0 {
 					key = cell
 				}
 			}

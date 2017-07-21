@@ -10,6 +10,8 @@ import (
 
 	"errors"
 
+	"path/filepath"
+
 	"github.com/sciter-sdk/go-sciter"
 	"github.com/sciter-sdk/go-sciter/window"
 )
@@ -138,7 +140,18 @@ func SetEventHandler(w *window.Window) {
 		excelFile := args[0].String()
 		excelFile = strings.TrimLeft(excelFile, "file://")
 		fields := []string{"avatar", "guest_name", "mobile"}
-		cellsMap, err := ReadCVS(fields, excelFile)
+		ext := strings.ToLower(filepath.Ext(excelFile))
+		if ext != ".csv" || ext != ".xlsx" {
+			return sciter.NewValue("文件格式不允许")
+		}
+		var err error
+		var cellsMap map[string]string
+		cellsMap = make(map[string]string)
+		if ext == ".csv" {
+			cellsMap, err = ReadCVS(fields, excelFile)
+		} else {
+			cellsMap, err = ReadXlsx(fields, excelFile)
+		}
 		if err != nil {
 			return sciter.NewValue(err.Error())
 		}
