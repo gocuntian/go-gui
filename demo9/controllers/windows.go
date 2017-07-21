@@ -139,7 +139,7 @@ func SetEventHandler(w *window.Window) {
 		fmt.Println(conferenceID)
 		excelFile := args[0].String()
 		excelFile = strings.TrimLeft(excelFile, "file://")
-		fields := []string{"avatar", "guest_name", "mobile"}
+		fields := []string{"avatar", "guest_name", "mobile", "guest_email", "company_name", "position", "hint"}
 		ext := strings.ToLower(filepath.Ext(excelFile))
 		if ext != ".csv" || ext != ".xlsx" {
 			return sciter.NewValue("文件格式不允许")
