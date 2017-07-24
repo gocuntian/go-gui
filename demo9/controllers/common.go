@@ -2,6 +2,9 @@ package controllers
 
 import (
 	"bytes"
+	"crypto/cipher"
+	"crypto/des"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -77,4 +80,45 @@ func SyncData(data string) (string, error) {
 	}
 	fmt.Println(string(body))
 	return string(body), nil
+}
+
+//Des 加密
+func DesEncrypt(data, key []byte) (string, error) {
+	block, err := des.NewCipher(key)
+	if err != nil {
+		return "", err
+	}
+	data = PKCS5Padding(data, block.BlockSize())
+	blockMode := cipher.NewCBCEncrypter(block, key)
+	crypted := make([]byte, len(data))
+	blockMode.CryptBlocks(crypted, data)
+	return base64.StdEncoding.EncodeToString(crypted), nil
+}
+
+//解密
+func DesDecrypt(crypted string, key []byte) (string, error) {
+	block, err := des.NewCipher(key)
+	if err != nil {
+		return "", err
+	}
+
+	data, err := base64.StdEncoding.DecodeString(crypted)
+	blockMode := cipher.NewCBCDecrypter(block, key)
+	origData := make([]byte, len(data))
+	blockMode.CryptBlocks(origData, data)
+	origData = PKCS5UnPadding(origData)
+	return string(origData), nil
+}
+
+func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(ciphertext, padtext...)
+}
+
+func PKCS5UnPadding(origData []byte) []byte {
+	length := len(origData)
+	// 去掉最后一个字节 unpadding 次
+	unpadding := int(origData[length-1])
+	return origData[:(length - unpadding)]
 }

@@ -20,7 +20,13 @@ func ReadXlsx(fields []string, file string) (map[string]string, error) {
 			if k > 0 {
 				for i, cell := range row.Cells {
 					if i > 0 && i <= len(fields) {
-						rowstr += fields[i] + "=" + cell.String() + "&"
+						if i == 2 || i == 3 || i == 4 || i == 5 {
+							val, _ := DesEncrypt([]byte(cell.String()), []byte(DES_KEY))
+							rowstr += fields[i] + "=" + val + "&"
+						} else {
+							rowstr += fields[i] + "=" + cell.String() + "&"
+						}
+
 					}
 					if i == 0 {
 						key = cell.String()
@@ -53,7 +59,13 @@ func ReadCVS(fields []string, cvsFile string) (map[string]string, error) {
 		if k > 0 {
 			for i, cell := range row {
 				if i > 0 && i <= len(fields) {
-					rowstr += fields[i] + "=" + cell + "&"
+					if i == 2 || i == 3 || i == 4 || i == 5 {
+						val, _ := DesEncrypt([]byte(cell), []byte(DES_KEY))
+						rowstr += fields[i] + "=" + val + "&"
+					} else {
+						rowstr += fields[i] + "=" + cell + "&"
+					}
+
 				}
 				if i == 0 {
 					key = cell
