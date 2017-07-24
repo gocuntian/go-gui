@@ -174,7 +174,12 @@ func SetEventHandler(w *window.Window) {
 				}
 				mapString = cellsMap[fi.Name()] + fields[0] + "=" + keyImg + "&conference_id=" + conferenceID + "&grade_id=1"
 				fmt.Println(mapString)
-				retstr, _ := SyncData(mapString)
+				retstr, err := SyncData(mapString)
+				if err != nil {
+					MsgLog(500, err.Error())
+				} else {
+					MsgLog(STATUS_CODE, retstr)
+				}
 				fmt.Println(retstr)
 			}
 

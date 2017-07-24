@@ -14,7 +14,13 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
+
+	sciter "github.com/sciter-sdk/go-sciter"
+	"github.com/sciter-sdk/go-sciter/window"
 )
+
+var wd *window.Window
 
 func UploadFile(url, file string) (string, error) {
 	bodyBuf := &bytes.Buffer{}
@@ -121,4 +127,52 @@ func PKCS5UnPadding(origData []byte) []byte {
 	// 去掉最后一个字节 unpadding 次
 	unpadding := int(origData[length-1])
 	return origData[:(length - unpadding)]
+}
+
+func NowTime() string {
+	return time.Now().Format("2006/01/02 15:04:05.9999")
+}
+
+func AppendMsg(msg string) error {
+	root, err := wd.GetRootElement()
+	if err != nil {
+		return err
+	}
+
+	resultElement, err := root.SelectById("result")
+	if err != nil {
+		return err
+	}
+	err = resultElement.SetHtml(msg, sciter.SIH_APPEND_AFTER_LAST)
+	if err != nil {
+		return err
+	}
+	root.Update(true)
+	return nil
+}
+
+func ClearMsg() error {
+	root, err := wd.GetRootElement()
+	if err != nil {
+		return err
+	}
+
+	resultElement, err := root.SelectById("result")
+	if err != nil {
+		return err
+	}
+	err = resultElement.SetHtml("<div id=\"result\" class=\"list\"></div>", sciter.SOH_REPLACE)
+	if err != nil {
+		return err
+	}
+	root.Update(true)
+	return nil
+}
+
+func MsgLog(code int, msg string) {
+	if code == STATUS_CODE {
+		AppendMsg("<div style=\"color:#FF8C00\">" + NowTime() + "  [正在进行中...] 内容:[" + msg + "]</div>")
+	} else {
+		AppendMsg("<div style=\"color:#FF0000\">" + NowTime() + "  [错误日志]  内容：[" + msg + "]</div>")
+	}
 }
