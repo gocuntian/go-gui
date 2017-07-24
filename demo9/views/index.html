@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</title>
+    <title>µ¼ÈëÊý¾Ý</title>
     <style>
         .common {
             width: 100%;
             border: 1px solid #ccc;
             margin: 10px auto;
         }
-        div.list
+		div.list
         {
         background:white white #D5D5D5 #D5D5D5;
         border:1px solid;
@@ -23,37 +23,38 @@
 <div class="common">
     <table class="table">
 		<tr>
-            <td>ï¿½ï¿½ï¿½é£º</td>
+            <td>»áÒé£º</td>
             <td>
                <select name="conference" id="retconference">
-					<option value="0">ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½</option>
+					<option value="0">ÇëÑ¡Ôñ»áÒé</option>
 				</select>
             </td>
         </tr>
         <tr>
-            <td>ï¿½Ä¼ï¿½(xlsx,csv)ï¿½ï¿½</td>
+            <td>ÎÄ¼þ(xlsx,csv)£º</td>
             <td>
-               <button id="selFile">Ñ¡ï¿½ï¿½ï¿½Ä¼ï¿½</button>
+               <button id="selFile">Ñ¡ÔñÎÄ¼þ</button>
 			   <span id="filePath"></span>
             </td>
         </tr>
         
         <tr>
-            <td>Í·ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ð£ï¿½</td>
+            <td>Í·ÏñÎÄ¼þ¼Ð£º</td>
             <td>
-                 <button id="selFolder">Ñ¡ï¿½ï¿½Ä¿Â¼</button>
+                 <button id="selFolder">Ñ¡ÔñÄ¿Â¼</button>
 				 <span id="folderPath"></span>
             </td>
         </tr>
 		<tr>
             <td colspan="2" style="text-align:center;vertical-align:middle;">
-			    <button id="uploadFile">ï¿½Ï´ï¿½</button>
+			    <button id="uploadFile">ÉÏ´«</button>
 			</td>
         </tr>
     </table>
 </div>
 <div id="result" class="list">
- <iframe id="reqRet"></iframe>
+    ½á¹û£º
+    <iframe id="reqRet"></iframe>
 	<span id="respRet"></span>
 </div>
 <script type="text/tiscript">
@@ -72,54 +73,54 @@
 				break
 			}
 		}
-        //Ñ¡ï¿½ï¿½ï¿½Ä¼ï¿½
+        //Ñ¡ÔñÎÄ¼þ
         $(#selFile).on("click", function() {
-            //ï¿½Ä¼ï¿½É¸Ñ¡ï¿½ï¿½
+            //ÎÄ¼þÉ¸Ñ¡Ïî
 			 const filter = "Files (*.csv,*.xlsx)|*.CSV;*.XLSX|All Files (*.*)|*.*";
             ///const filter = "Files (*.csv,*.csv,*.jpeg,*.gif,*.csv)|*.csv,*.jpg;*.jpeg;*.gif;*.png|All Files (*.*)|*.*";
-            //Ä¬ï¿½Ïºï¿½×º
+            //Ä¬ÈÏºó×º
             const defaultExt = ".csv";
-            //ï¿½ï¿½Ê¼ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ñ¡ï¿½ñ´°´ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
+            //³õÊ¼»¯Â·¾¶£¬¾ÍÊÇÎÄ¼þÑ¡Ôñ´°´ò¿ªÊ±ËùÔÚÂ·¾¶
             const initialPath = System.path(#USER_DOCUMENTS);
-            //ï¿½ï¿½ï¿½ï¿½
-            const caption = "Ñ¡ï¿½ï¿½csv";
+            //±êÌâ
+            const caption = "Ñ¡Ôñcsv";
             file = view.selectFile(#open, filter, defaultExt, initialPath, caption );
             $(#filePath).text = file;
             return true;
         });
-        //Ñ¡ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+        //Ñ¡ÔñÎÄ¼þ¼Ð
         $(#selFolder).on("click", function() {
-            folder = view.selectFolder("Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½");
+            folder = view.selectFolder("Ñ¡ÔñÄãµÄÎÄ¼þ¼Ð");
             $(#folderPath).text = folder;
         });
-        //ï¿½Ï´ï¿½ï¿½Ä¼ï¿½
+        //ÉÏ´«ÎÄ¼þ
         $(#uploadFile).on("click", function() {
-			//ï¿½ï¿½È¡selectï¿½ï¿½optionï¿½ï¿½ï¿½ï¿½Ñ¡È¡selectï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½$$ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+			//»ñÈ¡selectÏÂoption£¬ÏÈÑ¡È¡select£¬È»ºóÔÙ$$ÕÒ²éËüµÄ×ÓÔªËØ
 			var opt = $(select[name='conference']).$$(option);
 			var conferenceid = 0;
 			for(var child in opt) {
-				//ï¿½Ð¶ï¿½Ôªï¿½ï¿½ï¿½Ç·ï¿½Ñ¡ï¿½ï¿½
+				//ÅÐ¶ÏÔªËØÊÇ·ñÑ¡ÖÐ
 				if(child.getState(Element.STATE_CHECKED)) {
 					conferenceid = child.value;
 				}
 			}
 			view.dump(conferenceid)
 			if(conferenceid == 0) {
-				view.msgbox(#warning, "ï¿½ï¿½Ñ¡ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½");
+				view.msgbox(#warning, "ÇëÑ¡ÄãÒªµ¼ÈëµÄ»áÒé");
 				return false;
 			}
 			
 			$(#respRet).text = "";
 			if(file.length == 0) {
-				view.msgbox(#warning, "ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ä¼ï¿½");
+				view.msgbox(#warning, "ÇëÑ¡ÔñÎÄ¼þ");
 				return false;
 			}
 			if(folder.length == 0) {
-				view.msgbox(#warning, "ï¿½ï¿½Ñ¡ï¿½ï¿½Í·ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½");
+				view.msgbox(#warning, "ÇëÑ¡ÔñÍ·ÏñÎÄ¼þ¼Ð");
 				return false;
 			}
 			
-			if(click_enable && file && folderï¿½ï¿½&& conferenceid) {
+			if(click_enable && file && folder¡¡&& conferenceid) {
 					click_enable = false
 					var ret = view.upload(file, folder,conferenceid);
 					click_enable = true
@@ -127,7 +128,7 @@
 					folder=""
 					$(#respRet).text = ret;
 			}else{
-				    view.msgbox(#warning, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½");
+				    view.msgbox(#warning, "ÇëÖØÐÂÑ¡Ôñ");
 			}
         });
     };
