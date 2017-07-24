@@ -20,8 +20,6 @@ import (
 	"github.com/sciter-sdk/go-sciter/window"
 )
 
-var wd *window.Window
-
 func UploadFile(url, file string) (string, error) {
 	bodyBuf := &bytes.Buffer{}
 	bodyWriter := multipart.NewWriter(bodyBuf)
@@ -133,7 +131,7 @@ func NowTime() string {
 	return time.Now().Format("2006/01/02 15:04:05.9999")
 }
 
-func AppendMsg(msg string) error {
+func AppendMsg(wd *window.Window, msg string) error {
 	root, err := wd.GetRootElement()
 	if err != nil {
 		return err
@@ -151,7 +149,7 @@ func AppendMsg(msg string) error {
 	return nil
 }
 
-func ClearMsg() error {
+func ClearMsg(wd *window.Window) error {
 	root, err := wd.GetRootElement()
 	if err != nil {
 		return err
@@ -169,10 +167,12 @@ func ClearMsg() error {
 	return nil
 }
 
-func MsgLog(code int, msg string) {
+func MsgLog(wd *window.Window, code int, msg string) {
 	if code == STATUS_CODE {
-		AppendMsg("<div style=\"color:#FF8C00\">" + NowTime() + "  [正在进行中...] 内容:[" + msg + "]</div>")
+		//fmt.Println("=====", msg)
+		AppendMsg(wd, "<div style=\"color:#FF8C00\">"+NowTime()+"  [正在进行中...] 内容:["+msg+"]</div>")
 	} else {
-		AppendMsg("<div style=\"color:#FF0000\">" + NowTime() + "  [错误日志]  内容：[" + msg + "]</div>")
+		//fmt.Println("=====", msg)
+		AppendMsg(wd, "<div style=\"color:#FF0000\">"+NowTime()+"  [错误日志]  内容：["+msg+"]</div>")
 	}
 }

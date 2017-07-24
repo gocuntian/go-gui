@@ -16,7 +16,7 @@ import (
 	"github.com/sciter-sdk/go-sciter/window"
 )
 
-const URL = "https://apipre.bi.sensetime.com"
+const URL = ""
 const PathSeparator = `/`
 const STATUS_CODE = 200
 const DES_KEY = "bb635dd47e5861f717472df95652077356a8f38dea6347851c191f66b7cf9dc8"
@@ -142,7 +142,7 @@ func SetEventHandler(w *window.Window) {
 		excelFile = strings.TrimLeft(excelFile, "file://")
 		fields := []string{"avatar", "guest_name", "mobile", "guest_email", "company_name", "position", "hint"}
 		ext := strings.ToLower(filepath.Ext(excelFile))
-		if ext != ".csv" || ext != ".xlsx" {
+		if ext != ".csv" && ext != ".xlsx" {
 			return sciter.NewValue("文件格式不允许")
 		}
 		var err error
@@ -176,9 +176,9 @@ func SetEventHandler(w *window.Window) {
 				fmt.Println(mapString)
 				retstr, err := SyncData(mapString)
 				if err != nil {
-					MsgLog(500, err.Error())
+					MsgLog(w, 500, err.Error())
 				} else {
-					MsgLog(STATUS_CODE, retstr)
+					MsgLog(w, STATUS_CODE, retstr)
 				}
 				fmt.Println(retstr)
 			}
