@@ -23,7 +23,7 @@
 <div class="common">
     <table class="table">
 		<tr>
-            <td>会议：</td>
+            <td>会议:</td>
             <td>
                <select name="conference" id="retconference">
 					<option value="0">请选择会议</option>
@@ -31,15 +31,15 @@
             </td>
         </tr>
         <tr>
-            <td>文件(xlsx,csv)：</td>
+            <td>Excel文件:</td>
             <td>
-               <button id="selFile">选择文件</button>
+               <button id="selFile">请选择文件</button>
 			   <span id="filePath"></span>
             </td>
         </tr>
-
+        
         <tr>
-            <td>头像文件夹：</td>
+            <td>头像文件夹:</td>
             <td>
                  <button id="selFolder">选择目录</button>
 				 <span id="folderPath"></span>
@@ -53,7 +53,7 @@
     </table>
 </div>
 <div id="result" class="list">
-    结果：
+    结果:
 	<span id="respRet"></span>
 </div>
 <script type="text/tiscript">
@@ -61,7 +61,7 @@
         var file = "";
         var folder = "";
 		var click_enable = true
-
+		
 		var retconferences = view.conference()
 		var json = JSON.parse(retconferences)
 		var i = 0
@@ -72,45 +72,34 @@
 				break
 			}
 		}
-
-        //选择文件
+		
         $(#selFile).on("click", function() {
-            //文件筛选项
 			 const filter = "Files (*.csv,*.xlsx)|*.CSV;*.XLSX|All Files (*.*)|*.*";
-            ///const filter = "Files (*.csv,*.csv,*.jpeg,*.gif,*.csv)|*.csv,*.jpg;*.jpeg;*.gif;*.png|All Files (*.*)|*.*";
-            //默认后缀
             const defaultExt = ".csv";
-            //初始化路径，就是文件选择窗打开时所在路径
             const initialPath = System.path(#USER_DOCUMENTS);
-            //标题
-            const caption = "选择csv";
+            const caption = "";
             file = view.selectFile(#open, filter, defaultExt, initialPath, caption );
             $(#filePath).text = file;
             return true;
         });
-
-        //选择文件夹
+		
         $(#selFolder).on("click", function() {
             folder = view.selectFolder("选择你的文件夹");
             $(#folderPath).text = folder;
         });
-        //上传文件
         $(#uploadFile).on("click", function() {
-			//获取select下option，先选取select，然后再$$找查它的子元素
 			var opt = $(select[name='conference']).$$(option);
 			var conferenceid = 0;
 			for(var child in opt) {
-				//判断元素是否选中
 				if(child.getState(Element.STATE_CHECKED)) {
 					conferenceid = child.value;
 				}
 			}
-		    //view.dump(conferenceid)
 			if(conferenceid == 0) {
-				view.msgbox(#warning, "请选你要导入的会议");
+				view.msgbox(#warning, "选择你要导入的会议");
 				return false;
 			}
-
+			
 			$(#respRet).text = "";
 			if(file.length == 0) {
 				view.msgbox(#warning, "请选择文件");
@@ -120,8 +109,8 @@
 				view.msgbox(#warning, "请选择头像文件夹");
 				return false;
 			}
-
-			if(click_enable && file && folder　&& conferenceid) {
+			
+			if(click_enable && file && folder && conferenceid) {
 					click_enable = false
 					var ret = view.upload(file, folder,conferenceid);
 					click_enable = true
