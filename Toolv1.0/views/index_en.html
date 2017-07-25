@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>导入数据</title>
+    <title>Import Data</title>
     <style>
         .common {
             width: 100%;
@@ -23,37 +23,37 @@
 <div class="common">
     <table class="table">
 		<tr>
-            <td>会议:</td>
+            <td>Meeting:</td>
             <td>
                <select name="conference" id="retconference">
-					<option value="0">请选择会议</option>
+					<option value="0">Please select a meeting</option>
 				</select>
             </td>
         </tr>
         <tr>
-            <td>Excel文件:</td>
+            <td>ExcelFile:</td>
             <td>
-               <button id="selFile">请选择文件</button>
+               <button id="selFile">Please select the file</button>
 			   <span id="filePath"></span>
             </td>
         </tr>
         
         <tr>
-            <td>头像文件夹:</td>
+            <td>AvatarFolder:</td>
             <td>
-                 <button id="selFolder">选择目录</button>
+                 <button id="selFolder">Please select the directory</button>
 				 <span id="folderPath"></span>
             </td>
         </tr>
 		<tr>
             <td colspan="2" style="text-align:center;vertical-align:middle;">
-			    <button id="uploadFile">上传</button>
+			    <button id="uploadFile">upload</button>
 			</td>
         </tr>
     </table>
 </div>
 <div id="result" class="list">
-    结果:
+    result:
 	<span id="respRet"></span>
 </div>
 <script type="text/tiscript">
@@ -84,7 +84,7 @@
         });
 		
         $(#selFolder).on("click", function() {
-            folder = view.selectFolder("选择你的文件夹");
+            folder = view.selectFolder("Choose your folder");
             $(#folderPath).text = folder;
         });
         $(#uploadFile).on("click", function() {
@@ -96,17 +96,17 @@
 				}
 			}
 			if(conferenceid == 0) {
-				view.msgbox(#warning, "选择你要导入的会议");
+				view.msgbox(#warning, "Select the meeting you want to import");
 				return false;
 			}
 			
 			$(#respRet).text = "";
 			if(file.length == 0) {
-				view.msgbox(#warning, "请选择文件");
+				view.msgbox(#warning, "Please select the file");
 				return false;
 			}
 			if(folder.length == 0) {
-				view.msgbox(#warning, "请选择头像文件夹");
+				view.msgbox(#warning, "Please select the avatar folder");
 				return false;
 			}
 			
@@ -118,7 +118,7 @@
 					folder=""
 					$(#respRet).text = ret;
 			}else{
-				    view.msgbox(#warning, "请重新选择");
+				    view.msgbox(#warning, "Please re-select");
 			}
         });
     };
