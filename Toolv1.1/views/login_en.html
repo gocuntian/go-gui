@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Login</title>
+</head>
+<body>
+<div style="width:320px;border: 0px solid;margin:50px auto;padding:20px 0px 20px 40px;">
+	<form action="" style="padding: 2px;">
+		<table align="center">
+			<tr>
+				<td>Account:</td>
+				<td>
+					<input type="text" name="account"    novalue="Please input username" >
+				</td>
+			</tr>
+			
+			<tr>
+				<td>Password:</td>
+				<td>
+					<input type="password" name="password" novalue="Please enter your password" >
+				</td>
+			</tr>
+			
+			 <tr>
+				 <td colspan="2" style="text-align:center;vertical-align:middle;">
+					 	<button id="btn1">login</button>
+						<input type="reset" value="reset" />
+				 </td> 
+			 </tr>
+		</table>
+	</form>
+</div>
+
+
+<script type="text/tiscript">
+
+    $(#btn1).on("click", function() {
+        var name = $(input[name='account']).value.trim();
+        if(name.length == 0) {
+            view.msgbox(#warning, "Account can not be empty");
+            return false;
+        }
+
+        var pwd = $(input[name='password']).value.trim();
+        if(pwd.length == 0) {
+            view.msgbox(#warning, "password can not be blank");
+            return false;
+        }
+        var formData = {
+            "account": name,
+            "password": pwd,
+        };
+        var msg = view.login(JSON.stringify(formData));
+		if(msg){
+			view.msgbox(#warning, msg);
+		}
+		
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Import Data</title>
+    <style>
+        .common {
+            width: 100%;
+            border: 1px solid #ccc;
+            margin: 10px auto;
+        }
+		div.list
+        {
+        background:white white #D5D5D5 #D5D5D5;
+        border:1px solid;
+        width:*;
+        height:*;
+        overflow:scroll-indicator;
+        }
+    </style>
+</head>
+<body>
+<div class="common">
+    <table class="table">
+		<tr>
+            <td>Meeting:</td>
+            <td>
+               <select name="conference" id="retconference">
+					<option value="0">Please select a meeting</option>
+				</select>
+            </td>
+        </tr>
+        <tr>
+            <td>ExcelFile:</td>
+            <td>
+               <button id="selFile">Please select the file</button>
+			   <span id="filePath"></span>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AvatarFolder:</td>
+            <td>
+                 <button id="selFolder">Please select the directory</button>
+				 <span id="folderPath"></span>
+            </td>
+        </tr>
+		<tr>
+            <td colspan="2" style="text-align:center;vertical-align:middle;">
+			    <button id="uploadFile">upload</button>
+			</td>
+        </tr>
+    </table>
+</div>
+<div id="result" class="list">
+    result:
+	<span id="respRet"></span>
+</div>
+<script type="text/tiscript">
+    self.ready = function() {
+        var file = "";
+        var folder = "";
+		var click_enable = true
+		
+		var retconferences = view.conference()
+		var json = JSON.parse(retconferences)
+		var i = 0
+		while(true){
+			$(#retconference).options.append("<option value='"+json.data[i].id+"'>"+json.data[i].conference_name+"</option>")
+			i++
+			if(i==json.total){
+				break
+			}
+		}
+		
+        $(#selFile).on("click", function() {
+			 const filter = "Files (*.csv,*.xlsx)|*.CSV;*.XLSX|All Files (*.*)|*.*";
+            const defaultExt = ".csv";
+            const initialPath = System.path(#USER_DOCUMENTS);
+            const caption = "";
+            file = view.selectFile(#open, filter, defaultExt, initialPath, caption );
+            $(#filePath).text = file;
+            return true;
+        });
+		
+        $(#selFolder).on("click", function() {
+            folder = view.selectFolder("Choose your folder");
+            $(#folderPath).text = folder;
+        });
+        $(#uploadFile).on("click", function() {
+			var opt = $(select[name='conference']).$$(option);
+			var conferenceid = 0;
+			for(var child in opt) {
+				if(child.getState(Element.STATE_CHECKED)) {
+					conferenceid = child.value;
+				}
+			}
+			if(conferenceid == 0) {
+				view.msgbox(#warning, "Select the meeting you want to import");
+				return false;
+			}
+			
+			$(#respRet).text = "";
+			if(file.length == 0) {
+				view.msgbox(#warning, "Please select the file");
+				return false;
+			}
+			if(folder.length == 0) {
+				view.msgbox(#warning, "Please select the avatar folder");
+				return false;
+			}
+			
+			if(click_enable && file && folder && conferenceid) {
+					click_enable = false
+					var ret = view.upload2(file, folder,conferenceid);
+					click_enable = true
+					file=""
+					folder=""
+					$(#respRet).text = ret;
+			}else{
+				    view.msgbox(#warning, "Please re-select");
+			}
+        });
+    };
+</script>
+</body>
+</html>
