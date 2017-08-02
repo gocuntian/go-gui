@@ -17,13 +17,6 @@
         height:*;
         overflow:scroll-indicator;
         }
-		div.errlist
-        {
-        background:white white #D5D5D5 #D5D5D5;
-        border-bottom:1px dashed;
-        width:*;
-        overflow:scroll-indicator;
-        }
     </style>
 </head>
 <body>
@@ -64,10 +57,12 @@
     </table>
 </div>
 <div class="common">
+	<span id="progress" style="display:block;"><span style="display:block;">完成进度:</span><meter name='xingcuntian' value=0 style="width:99%;display:block;"/></span>
 	<span id="respRet"></span>
 </div>
-<div id="result" class="list"></div>
-<div id="errmsg" class="errlist"></div>
+<div id="result" class="list">
+   
+</div>
 <script type="text/tiscript">
     self.ready = function() {
         var file = "";
