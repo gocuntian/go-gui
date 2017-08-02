@@ -20,7 +20,7 @@ import (
 const URL = ""
 const PathSeparator = `/`
 const STATUS_CODE = 200
-const DES_KEY = "bb635dd47e5861f717472df95652077356a8f38dea6347851c191f66b7cf9dc8"
+const DES_KEY = ""
 
 var CurCookies []*http.Cookie
 var CurCookieJar *cookiejar.Jar
